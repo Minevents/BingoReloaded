@@ -466,7 +466,7 @@ public class BingoGame implements GamePhase
     }
 
     private WorldPosition getRandomSpawnLocation(WorldHandle world) {
-        int teleportMaxDistance = config.getOptionValue(BingoOptions.TELEPORT_MAX_DISTANCE);
+        int teleportMaxDistance = 10_000;
 
         WorldPosition randomPosition = BlockHelper.getRandomPosWithinRange(new WorldPosition(world, 0.0D, 0.0D, 0.0D), teleportMaxDistance, teleportMaxDistance);
         WorldPosition location = new WorldPosition(world, randomPosition.x(), BlockHelper.getHighestBlockYAtPos(randomPosition), randomPosition.z());
