@@ -1,5 +1,6 @@
 package io.github.steaf23.bingoreloaded.lib.inventory.action;
 
+import io.github.steaf23.bingoreloaded.gui.inventory.AdminBingoMenu;
 import io.github.steaf23.bingoreloaded.lib.inventory.InventoryMenu;
 import io.github.steaf23.bingoreloaded.lib.item.ItemTemplate;
 import net.kyori.adventure.text.Component;
@@ -15,17 +16,17 @@ public class SpinBoxButtonAction extends MenuAction
     private Consumer<Integer> callback;
 
     public SpinBoxButtonAction(int minValue, int maxValue, int initialValue, @NotNull Consumer<Integer> callback) {
-        maxValue = Math.min(maxValue, 64);
-        this.min = Math.clamp(minValue, 1, maxValue);
-        this.max = Math.clamp(maxValue, minValue, 64);
+        maxValue = Math.min(maxValue, AdminBingoMenu.DURATION_MAX);
+        this.min = Math.clamp(minValue, 1, AdminBingoMenu.DURATION_MAX);
+        this.max = Math.clamp(maxValue, minValue, AdminBingoMenu.DURATION_MAX);
         this.value = Math.clamp(initialValue, min, max);
         this.callback = callback;
     }
 
     public SpinBoxButtonAction(int minValue, int maxValue, int initialValue) {
-        maxValue = Math.min(maxValue, 64);
-        this.min = Math.clamp(minValue, 1, maxValue);
-        this.max = Math.clamp(maxValue, minValue, 64);
+        maxValue = Math.min(maxValue, AdminBingoMenu.DURATION_MAX);
+        this.min = Math.clamp(minValue, 1, AdminBingoMenu.DURATION_MAX);
+        this.max = Math.clamp(maxValue, minValue, AdminBingoMenu.DURATION_MAX);
         this.value = Math.clamp(initialValue, min, max);
         this.callback = null;
     }
@@ -33,7 +34,11 @@ public class SpinBoxButtonAction extends MenuAction
     @Override
     public void setItem(@NotNull ItemTemplate item) {
         super.setItem(item);
-        item.setAmount(value);
+        if (this.value > 64) {
+            item.setAmount(1);
+        } else {
+            item.setAmount(value);
+        }
 
         item.addDescription("input", 10,
                 InventoryMenu.INPUT_LEFT_CLICK.append(Component.text("increase")),
@@ -86,7 +91,11 @@ public class SpinBoxButtonAction extends MenuAction
 
     private void updateItem() {
         if (item != null) {
-            item.setAmount(value);
+            if (this.value < 1 || this.value > 64) {
+                item.setAmount(1);
+            } else {
+                item.setAmount(value);
+            }
         }
         if (callback != null) {
             callback.accept(value);

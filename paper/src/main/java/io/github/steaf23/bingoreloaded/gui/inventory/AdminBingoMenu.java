@@ -32,7 +32,7 @@ public class AdminBingoMenu extends BasicMenu
 {
     private final BingoSession session;
 
-    private static final int DURATION_MAX = 60;
+    public static final int DURATION_MAX = 60 * 8;
     private static final int TEAMSIZE_MAX = 64;
 
     private static final Component COUNTDOWN_INPUT_LORE = InventoryMenu.inputButtonText(Component.text("Click")).append(Component.text("toggle countdown type"));
